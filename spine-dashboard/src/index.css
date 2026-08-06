@@ -1,0 +1,72 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+@layer base {
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply min-h-screen bg-spine-bg font-sans text-spine-fg antialiased;
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(99, 102, 241, 0.09), transparent),
+      radial-gradient(ellipse 60% 40% at 100% 0%, rgba(99, 102, 241, 0.04), transparent);
+  }
+
+  ::selection {
+    background-color: rgba(99, 102, 241, 0.3);
+    color: #fff;
+  }
+}
+
+@layer components {
+  .page-enter {
+    @apply animate-slide-up;
+  }
+
+  .surface-panel {
+    @apply rounded-xl border bg-spine-surface shadow-soft;
+    border-color: rgba(255, 255, 255, 0.08);
+  }
+
+  .data-table {
+    @apply w-full text-sm;
+  }
+
+  .data-table thead {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    @apply bg-spine-elevated;
+    background-color: rgba(24, 24, 27, 0.5);
+  }
+
+  .data-table th {
+    @apply px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-spine-subtle;
+  }
+
+  .data-table td {
+    @apply px-4 py-3.5 align-middle text-spine-muted;
+  }
+
+  .data-table tbody tr {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    @apply transition-colors;
+  }
+
+  .data-table tbody tr:hover {
+    background-color: rgba(31, 31, 35, 0.5);
+  }
+
+  .data-table tbody tr:last-child {
+    border-bottom: none;
+  }
+
+  .code-inline {
+    @apply rounded-md border bg-spine-elevated px-1.5 py-0.5 font-mono text-xs text-spine-accent;
+    border-color: rgba(255, 255, 255, 0.08);
+  }
+}

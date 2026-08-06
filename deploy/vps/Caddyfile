@@ -1,0 +1,28 @@
+# Site address: set SITE_ADDRESS in .env (see env.production.example).
+# Examples:
+#   demo.yourdomain.com     → automatic HTTPS (Let's Encrypt)
+#   :80                     → HTTP only (quick test by server IP; no TLS)
+{$SITE_ADDRESS} {
+	header {
+		X-Content-Type-Options nosniff
+		X-Frame-Options DENY
+		Referrer-Policy strict-origin-when-cross-origin
+		Permissions-Policy "camera=(), microphone=(), geolocation=()"
+		-Server
+	}
+	reverse_proxy dashboard:4173 {
+		# So the Node BFF sees HTTPS vs HTTP (session cookie secure: "auto").
+		header_up X-Forwarded-Proto {http.request.scheme}
+		header_up X-Forwarded-Host {http.request.host}
+	}
+}
+
+# Agent / OpenClaw API (org-key auth). Set API_ADDRESS in .env and add a DNS A record.
+# Example: API_ADDRESS=api.demo.spinelayer.com
+{$API_ADDRESS} {
+	header {
+		X-Content-Type-Options nosniff
+		-Server
+	}
+	reverse_proxy api:8000
+}

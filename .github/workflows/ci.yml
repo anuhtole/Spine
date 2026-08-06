@@ -1,0 +1,110 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install ruff
+      - run: ruff check .
+      - run: ruff format --check .
+
+  test:
+    name: Backend tests
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: spine
+          POSTGRES_PASSWORD: spine
+          POSTGRES_DB: spine_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U spine"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      DATABASE_URL: postgresql+asyncpg://spine:spine@localhost:5432/spine_test
+      ADMIN_API_KEY: test-key
+      JWT_SECRET: test-secret
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt -r requirements-dev.txt
+      - run: pytest -v
+
+  hook:
+    name: Claude Code hook tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pytest httpx
+      - run: python -m pytest tests/ -v
+        working-directory: integrations/claude-code-spine
+
+  smoke:
+    name: End-to-end smoke
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt -r requirements-dev.txt
+      - run: bash tools/smoke_plan_bound.sh
+
+  examples:
+    name: Example scripts
+    runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: "sqlite+aiosqlite:///:memory:"
+      ADMIN_API_KEY: test-key
+      JWT_SECRET: test-secret
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt -r requirements-dev.txt
+      - run: python examples/injection_isolation.py
+      - run: python examples/audit_tamper_detection.py
+
+  dashboard:
+    name: Dashboard typecheck and build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - run: npm install --include=dev
+        working-directory: spine-dashboard
+      - run: npx tsc --noEmit
+        working-directory: spine-dashboard
+      - run: npx vite build --outDir /tmp/spine-dashboard-build
+        working-directory: spine-dashboard
+
+  build:
+    name: Build Docker images
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t spine-api .
+      - run: docker build -t spine-dashboard ./spine-dashboard

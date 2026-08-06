@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "spine"
+version = "0.1.0"
+description = "A control plane for autonomous AI agents"
+requires-python = ">=3.11"
+dependencies = []
+
+[tool.ruff]
+target-version = "py311"
+line-length = 120
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W"]
+ignore = ["E501"]
+
+[tool.ruff.lint.per-file-ignores]
+# Importing a pytest fixture by name into a test module is how fixtures are
+# shared across files. Ruff reads the fixture argument as a redefinition of
+# the imported name; it isn't one.
+"tests/*" = ["F811"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"

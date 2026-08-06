@@ -1,0 +1,37 @@
+# Secrets — never commit
+.env
+.env.local
+*.pem
+*.key
+
+# Python
+.venv/
+venv/
+.seedvenv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Node
+node_modules/
+dist/
+build/
+*.tsbuildinfo
+
+# Vite transient HMR build artifacts
+spine-dashboard/vite.config.ts.timestamp-*.mjs
+
+# Local database volume
+.pgdata/
+
+# Editors / OS
+.DS_Store
+.idea/
+.vscode/
+*.swp

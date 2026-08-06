@@ -1,0 +1,92 @@
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: spine
+      POSTGRES_PASSWORD: spine
+      POSTGRES_DB: spine
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U spine -d spine"]
+      interval: 2s
+      timeout: 3s
+      retries: 20
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 2s
+      timeout: 3s
+      retries: 10
+
+  api:
+    build: .
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: ${DATABASE_URL:-postgresql+asyncpg://spine:spine@db:5432/spine}
+      ADMIN_API_KEY: ${ADMIN_API_KEY:-change-me}
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+      ENVIRONMENT: ${ENVIRONMENT:-local}
+      PYTHONPATH: /app
+      REDIS_URL: ${REDIS_URL:-redis://redis:6379/0}
+      CELERY_BROKER_URL: ${CELERY_BROKER_URL:-redis://redis:6379/0}
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    command: >
+      sh -c "alembic upgrade head && uvicorn spine.main:app --host 0.0.0.0 --port 8000"
+
+  worker:
+    build: .
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: ${DATABASE_URL:-postgresql+asyncpg://spine:spine@db:5432/spine}
+      ADMIN_API_KEY: ${ADMIN_API_KEY:-change-me}
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+      ENVIRONMENT: ${ENVIRONMENT:-local}
+      PYTHONPATH: /app
+      REDIS_URL: ${REDIS_URL:-redis://redis:6379/0}
+      CELERY_BROKER_URL: ${CELERY_BROKER_URL:-redis://redis:6379/0}
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    command: celery -A spine.worker.celery_app worker --loglevel=info
+
+  dashboard:
+    image: node:20-slim
+    working_dir: /app
+    volumes:
+      - ./spine-dashboard:/app
+    env_file:
+      - .env
+    environment:
+      # BFF listens on 4173 in production mode (SERVE_STATIC=true)
+      BFF_PORT: 4173
+      SERVE_STATIC: "true"
+      NODE_ENV: production
+      # Ensure the BFF can reach the API from inside compose
+      SPINE_BASE_URL: http://api:8000
+      SPINE_ADMIN_API_KEY: ${ADMIN_API_KEY:-change-me}
+    ports:
+      - "4173:4173"
+    depends_on:
+      - api
+    command: >
+      sh -c "npm install --include=dev && npm run build && npm run start"
+
+volumes:
+  postgres_data:
