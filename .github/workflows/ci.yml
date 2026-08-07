@@ -14,7 +14,9 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: pip install ruff
+      # Install from requirements-dev.txt so CI uses the pinned ruff version
+      # rather than whatever is newest on PyPI that day.
+      - run: pip install -r requirements-dev.txt
       - run: ruff check .
       - run: ruff format --check .
 

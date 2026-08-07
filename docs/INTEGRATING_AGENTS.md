@@ -53,10 +53,9 @@ from spine_sdk import SpineClient, guard_tool
 
 client = SpineClient(base_url="...", org_key="spine_...", http_client=httpx.Client())
 
-@guard_tool(client, agent_id=AGENT_ID, action_type="read",
-            target_resource_for_action=lambda path, **_: path)
-def read_file(path: str):
-    ...
+
+@guard_tool(client, agent_id=AGENT_ID, action_type="read", target_resource_for_action=lambda path, **_: path)
+def read_file(path: str): ...
 ```
 
 **Inline check**:

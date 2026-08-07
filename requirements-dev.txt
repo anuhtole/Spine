@@ -1,4 +1,8 @@
 pytest>=8.3
 pytest-asyncio>=0.23
-ruff>=0.6
 aiosqlite>=0.20
+
+# Pinned exactly: ruff's formatter changes its output between releases, so an
+# unpinned version means CI can start failing with no change to the code.
+# Bump deliberately, and run `ruff format .` in the same commit.
+ruff==0.16.1

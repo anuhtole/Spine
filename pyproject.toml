@@ -25,3 +25,7 @@ ignore = ["E501"]
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
+# Put the repo root on sys.path so `import spine` works with a plain `pytest`,
+# without needing an editable install. Without this, only `python -m pytest`
+# works (that form adds the cwd itself) and bare `pytest` fails to collect.
+pythonpath = ["."]
