@@ -8,7 +8,7 @@ Thanks for looking. Issues and pull requests are welcome.
 git clone https://github.com/VishnuR23/spine.git
 cd spine
 python3 -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt -r requirements-dev.txt
+pip install -e ".[dev]"
 make demo          # brings up the stack and seeds a working demo
 ```
 

@@ -14,9 +14,9 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      # Install from requirements-dev.txt so CI uses the pinned ruff version
-      # rather than whatever is newest on PyPI that day.
-      - run: pip install -r requirements-dev.txt
+      # Install the dev extra so CI uses the ruff version pinned in
+      # pyproject.toml rather than whatever is newest on PyPI that day.
+      - run: pip install -e ".[dev]"
       - run: ruff check .
       - run: ruff format --check .
 
@@ -46,7 +46,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: pip install -r requirements.txt -r requirements-dev.txt
+      - run: pip install -e ".[dev]"
       - run: pytest -v
 
   hook:
@@ -69,7 +69,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: pip install -r requirements.txt -r requirements-dev.txt
+      - run: pip install -e ".[dev]"
       - run: bash tools/smoke_plan_bound.sh
 
   examples:
@@ -84,7 +84,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: pip install -r requirements.txt -r requirements-dev.txt
+      - run: pip install -e ".[dev]"
       - run: python examples/injection_isolation.py
       - run: python examples/audit_tamper_detection.py
 

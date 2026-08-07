@@ -3,7 +3,7 @@
 Base URL is your Spine instance — `http://localhost:8000` for local development.
 Interactive docs are served at `/docs` outside production.
 
-The machine-readable contract is [`openapi/openapi.json`](../openapi/openapi.json),
+The machine-readable contract is [`docs/openapi.json`](openapi.json),
 regenerated with `make openapi`.
 
 ---

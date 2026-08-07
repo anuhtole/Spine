@@ -1,4 +1,4 @@
-.PHONY: help demo up down logs clean test test-backend test-hook smoke dashboard-check verify openapi
+.PHONY: help install demo up down logs clean test test-backend test-hook smoke dashboard-check verify openapi
 
 help:
 	@echo "Spine — common commands"
@@ -9,10 +9,14 @@ help:
 	@echo "  make clean     Stop the stack and DESTROY data"
 	@echo "  make logs      Tail API and worker logs"
 	@echo ""
+	@echo "  make install   Install the package and dev tools into the active venv"
 	@echo "  make verify    Run every check (backend, hook, smoke, dashboard)"
 	@echo "  make test      Backend + hook tests"
 	@echo "  make smoke     End-to-end smoke test (~30s, no API key needed)"
 	@echo ""
+
+install:
+	pip install -e ".[dev]"
 
 # docker compose needs a .env to exist. Generate one with real secrets —
 # the dashboard refuses to start on the example's placeholder values.

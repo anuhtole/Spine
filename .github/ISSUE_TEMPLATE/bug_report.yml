@@ -1,0 +1,66 @@
+name: Bug report
+description: Something behaves differently than documented
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Security vulnerabilities do not belong here — please follow
+        [SECURITY.md](../../blob/main/SECURITY.md) instead.
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: What did you observe, and what did you expect instead?
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      description: The smallest sequence that shows the problem. Include the request or command if relevant.
+      placeholder: |
+        1. make demo
+        2. curl -X POST .../v1/intercept -d '...'
+        3. Response was ... , expected ...
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Intercept / policy engine
+        - Audit log
+        - Plan-bound monitoring
+        - Approvals
+        - Webhooks
+        - Dashboard
+        - SDKs
+        - Claude Code integration
+        - Deployment
+        - Not sure
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Version or commit
+      placeholder: "0.1.0, or the commit SHA you are running"
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      placeholder: "OS, Python version, Docker or local, Postgres or SQLite"
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs
+      description: Output of `make logs`, a stack trace, or the failing response body.
+      render: shell

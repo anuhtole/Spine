@@ -5,10 +5,12 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 
 WORKDIR /app
 
-COPY requirements.txt /app/requirements.txt
-RUN pip install --no-cache-dir -r /app/requirements.txt
-
+# pyproject.toml is the single source of dependencies. Installing the package
+# pulls them in; there is no separate requirements file to keep in sync.
+COPY pyproject.toml README.md /app/
 COPY spine /app/spine
+RUN pip install --no-cache-dir .
+
 COPY tools /app/tools
 COPY alembic.ini /app/alembic.ini
 COPY migrations /app/migrations
