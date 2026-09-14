@@ -181,6 +181,11 @@ is a finding we want.
 
 To report a security issue, see [SECURITY.md](SECURITY.md).
 
+## Authors
+
+Spine is built and maintained by [Anatole Seychal](https://github.com/anuhtole)
+and [Vishnu Rajeev](https://github.com/VishnuR23).
+
 ## License
 
 Apache 2.0 — see [LICENSE](LICENSE).

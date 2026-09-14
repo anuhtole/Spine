@@ -9,7 +9,7 @@ description = "A control plane for autonomous AI agents"
 readme = "README.md"
 requires-python = ">=3.11"
 license = "Apache-2.0"
-authors = [{ name = "Vishnu Rajeev" }]
+authors = [{ name = "Anatole Seychal" }, { name = "Vishnu Rajeev" }]
 keywords = ["ai-agents", "policy", "audit-log", "prompt-injection", "governance"]
 classifiers = [
     "Development Status :: 3 - Alpha",
@@ -59,9 +59,9 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/VishnuR23/spine"
-Repository = "https://github.com/VishnuR23/spine"
-Issues = "https://github.com/VishnuR23/spine/issues"
+Homepage = "https://github.com/Anuhtole/Spine"
+Repository = "https://github.com/Anuhtole/Spine"
+Issues = "https://github.com/Anuhtole/Spine/issues"
 
 [tool.setuptools.packages.find]
 include = ["spine*"]

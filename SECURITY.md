@@ -5,12 +5,13 @@
 Please report security issues privately, not as public GitHub issues.
 
 Use GitHub's [private vulnerability reporting](https://docs.github.com/en/code-security/security-advisories/guidance-on-reporting-and-writing-information-about-vulnerabilities/privately-reporting-a-security-vulnerability)
-on this repository, or email **vishnu@spinelayer.com**.
+on this repository, or email **vishnu@spinelayer.com** or
+**aseychal@berkeley.edu**.
 
 Please include what you were able to do, the steps to reproduce it, and the
 version or commit you tested. If you have a proof of concept, include it.
 
-This is a small project, currently maintained by one person. Expect an
+This is a small project maintained by its two authors. Expect an
 acknowledgement within a few days. There is no bounty program.
 
 ## Scope
@@ -24,7 +25,9 @@ that break a claim it makes:
   return `ok` for a log that was altered.
 - **Reaching the plan reviewer's input** — getting agent-controlled content
   (file contents, tool output, metadata, prompts) into the reviewer's context.
-  See `examples/injection_isolation.py` for what is being claimed.
+  See `examples/injection_isolation.py` for what is being claimed, and
+  `docs/THREAT_MODEL.md` for the two agent-declared fields that are
+  deliberately visible to the reviewer and what contains them.
 - **Cross-tenant access** — reading or writing another organization's data.
 - **Credential exposure** — recovering a raw org key, a JWT secret, or the
   admin key through any endpoint.
