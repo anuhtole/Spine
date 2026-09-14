@@ -121,6 +121,7 @@ else:
 |---|---|
 | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | How the pieces fit, and why they are arranged this way |
 | [docs/PLAN_BOUND_MONITORING.md](docs/PLAN_BOUND_MONITORING.md) | The plan reviewer in depth |
+| [docs/THREAT_MODEL.md](docs/THREAT_MODEL.md) | Assets, trust boundaries, attacker capabilities, and the residual attack surface |
 | [docs/INTEGRATING_AGENTS.md](docs/INTEGRATING_AGENTS.md) | Connecting agents and frameworks |
 | [docs/API.md](docs/API.md) | Endpoint reference and curl examples |
 | [deploy/vps/README.md](deploy/vps/README.md) | Production deploy on a single VPS |
@@ -173,7 +174,10 @@ Known limitations:
 
 See [CONTRIBUTING.md](CONTRIBUTING.md). Issues and pull requests welcome —
 particularly around policy expressiveness, additional framework integrations,
-and adversarial testing of the reviewer.
+and adversarial testing of the reviewer. The current adversarial corpus lives in
+[`tests/fixtures/reviewer_injection_corpus.json`](tests/fixtures/reviewer_injection_corpus.json);
+a payload that breaks [`tests/test_reviewer_injection_corpus.py`](tests/test_reviewer_injection_corpus.py)
+is a finding we want.
 
 To report a security issue, see [SECURITY.md](SECURITY.md).
 
